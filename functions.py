@@ -22,6 +22,9 @@ from sklearn.preprocessing import PolynomialFeatures
 
 import sklearn.preprocessing
 
+
+############################## Cleaning ################################
+
 def nulls_by_col(df):
     num_missing = df.isnull().sum()
     rows = df.shape[0]
@@ -156,96 +159,101 @@ def make_metric_df(y, y_pred, model_name, metric_df):
                     y_pred)
             }, ignore_index=True)
 
-def baseline(y_train, y_validate, metric_df, target):
-    mean = y_train.tax_value.mean() # Train Mean
-    y_train[target] = mean
-    y_validate[target] = mean
+def baseline(y_train, y_validate, metric_df):
+    target = y_train.columns[0]
+    mean = y_train[target].mean() # Train Mean
+    y_train[target+"_pred_mean"] = mean
+    y_validate[target+"_pred_mean"] = mean
     
     # make our first entry into the metric_df with median baseline
-    metric_df = make_metric_df(y_validate.tax_value,
-                           y_validate.tax_value_pred_mean,
+    metric_df = make_metric_df(y_validate[target],
+                           y_validate[target+"_pred_mean"],
                            'mean_baseline',
                           metric_df)
     return metric_df
 
 
 def ols(X_train, y_train, X_validate, y_validate, metric_df):
-
+    target = y_train.columns[0]
     lm = LinearRegression(normalize=True)
-    lm.fit(X_train, y_train.tax_value)
-    y_train['tax_value_pred_lm'] = lm.predict(X_train)
+    lm.fit(X_train, y_train[target])
+    y_train[target+'_pred_lm'] = lm.predict(X_train)
     # evaluate: rmse
-    rmse_train = mean_squared_error(y_train.tax_value, y_train.tax_value_pred_lm) ** (1/2)
+    rmse_train = mean_squared_error(y_train[target], y_train[target+'_pred_lm']) ** (1/2)
 
     # predict validate
-    y_validate['tax_value_pred_lm'] = lm.predict(X_validate)
+    y_validate[target+'_pred_lm'] = lm.predict(X_validate)
 
     # evaluate: rmse
-    rmse_validate = mean_squared_error(y_validate.tax_value, y_validate.tax_value_pred_lm) ** (1/2)
+    rmse_validate = mean_squared_error(y_validate[target], y_validate[target+'_pred_lm']) ** (1/2)
     
     metric_df = metric_df.append({
     'model': 'OLS Regressor', 
     'RMSE_validate': rmse_validate,
-    'r^2_validate': explained_variance_score(y_validate.tax_value, y_validate.tax_value_pred_lm)}, ignore_index=True)
+    'r^2_validate': explained_variance_score(y_validate[target], y_validate[target+'_pred_lm'])}, ignore_index=True)
     
     return metric_df
 
 def lasso_lars(X_train, y_train, X_validate, y_validate, metric_df, alpha):
+    
+    target = y_train.columns[0]
     # create the model object
     lars = LassoLars(alpha=alpha)
     
     # fit the model to our training data. We must specify the column in y_train, 
     # since we have converted it to a dataframe from a series!
-    lars.fit(X_train, y_train.tax_value)
+    lars.fit(X_train, y_train[target])
     
     # predict train
-    y_train['tax_value_pred_lars'] = lars.predict(X_train)
+    y_train[target+'_pred_lars'] = lars.predict(X_train)
     
     # evaluate: rmse
-    rmse_train = mean_squared_error(y_train.tax_value, y_train.tax_value_pred_lars) ** (1/2)
+    rmse_train = mean_squared_error(y_train[target], y_train[target+'_pred_lars']) ** (1/2)
     
     # predict validate
-    y_validate['tax_value_pred_lars'] = lars.predict(X_validate)
+    y_validate[target+'_pred_lars'] = lars.predict(X_validate)
     
     # evaluate: rmse
-    rmse_validate = mean_squared_error(y_validate.tax_value, y_validate.tax_value_pred_lars) ** (1/2)
+    rmse_validate = mean_squared_error(y_validate[target], y_validate[target+'_pred_lars']) ** (1/2)
     
-    metric_df = make_metric_df(y_validate.tax_value,
-               y_validate.tax_value_pred_lars,
+    metric_df = make_metric_df(y_validate[target],
+               y_validate[target+'_pred_lars'],
                'lasso_alpha_'+str(alpha),
                metric_df)
 
     return metric_df
 
 def tweedie(X_train, y_train, X_validate, y_validate, metric_df, power, alpha):
+    target = y_train.columns[0]
     # create the model object
     glm = TweedieRegressor(power=power, alpha=alpha)
     
     
     # fit the model to our training data. We must specify the column in y_train, 
     # since we have converted it to a dataframe from a series! 
-    glm.fit(X_train, y_train.tax_value)
+    glm.fit(X_train, y_train[target])
     
     # predict train
-    y_train['tax_value_pred_glm'] = glm.predict(X_train)
+    y_train[target+'_pred_glm'] = glm.predict(X_train)
     
     # evaluate: rmse
-    rmse_train = mean_squared_error(y_train.tax_value, y_train.tax_value_pred_glm) ** (1/2)
+    rmse_train = mean_squared_error(y_train[target], y_train[target+'_pred_glm']) ** (1/2)
     
     # predict validate
-    y_validate['tax_value_pred_glm'] = glm.predict(X_validate)
+    y_validate[target+'_pred_glm'] = glm.predict(X_validate)
     
     # evaluate: rmse
-    rmse_validate = mean_squared_error(y_validate.tax_value, y_validate.tax_value_pred_glm) ** (1/2)
+    rmse_validate = mean_squared_error(y_validate[target], y_validate[target+'_pred_glm']) ** (1/2)
     
-    metric_df = make_metric_df(y_validate.tax_value,
-               y_validate.tax_value_pred_glm,
+    metric_df = make_metric_df(y_validate[target],
+               y_validate[target+'_pred_glm'],
                'glm_power_'+str(power)+"_aplha_"+str(alpha),
                metric_df)
 
     return metric_df
 
 def poly(X_train, y_train, X_validate, y_validate, metric_df, degree):
+    target = y_train.columns[0]
     # make the polynomial features to get a new set of features
     pf = PolynomialFeatures(degree=degree)
     
@@ -261,21 +269,21 @@ def poly(X_train, y_train, X_validate, y_validate, metric_df, degree):
     
     # fit the model to our training data. We must specify the column in y_train, 
     # since we have converted it to a dataframe from a series! 
-    lm2.fit(X_train_degree2, y_train.tax_value)
+    lm2.fit(X_train_degree2, y_train[target])
     
     # predict train
-    y_train['tax_value_pred_lm2'] = lm2.predict(X_train_degree2)
+    y_train[target+'_pred_lm2'] = lm2.predict(X_train_degree2)
     
     # evaluate: rmse
-    rmse_train = mean_squared_error(y_train.tax_value, y_train.tax_value_pred_lm2) ** (1/2)
+    rmse_train = mean_squared_error(y_train[target], y_train[target+'_pred_lm2']) ** (1/2)
     
     # predict validate
-    y_validate['tax_value_pred_lm2'] = lm2.predict(X_validate_degree2)
+    y_validate[target+'_pred_lm2'] = lm2.predict(X_validate_degree2)
     
     # evaluate: rmse
-    rmse_validate = mean_squared_error(y_validate.tax_value, y_validate.tax_value_pred_lm2) ** 0.5
-    metric_df = make_metric_df(y_validate.tax_value,
-                   y_validate.tax_value_pred_lm2,
+    rmse_validate = mean_squared_error(y_validate[target], y_validate[target+'_pred_lm2']) ** 0.5
+    metric_df = make_metric_df(y_validate[target],
+                   y_validate[target+'_pred_lm2'],
                    'poly_degree_'+str(degree),
                    metric_df)
 
@@ -295,8 +303,8 @@ def metric(X_train, y_train, X_validate, y_validate, metric_df):
         metric_df = lasso_lars(X_train, y_train, X_validate, y_validate, metric_df, i)
     
     #tweedie
-    for power in range (0, 5):
-        for alpha in range(0, 5):
+    for power in range (0, 0):
+        for alpha in range(0, 4):
             metric_df = tweedie(X_train, y_train, X_validate, y_validate, metric_df, power, alpha)
     
     #Poly
