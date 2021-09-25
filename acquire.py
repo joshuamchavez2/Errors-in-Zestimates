@@ -8,7 +8,7 @@ def get_db_url(url):
     url = f'mysql+pymysql://{user}:{password}@{host}/{url}'
     return url
 
-def zillow_data():
+def data():
     '''
     This function reads the titanic data from the Codeup db into a df,
     write it to a csv file, and returns the df.
@@ -36,7 +36,7 @@ def zillow_data():
 
     return df
 
-def acquire_zillow():
+def acquire():
     '''
     This function reads in titanic data from Codeup database, writes data to
     a csv file if a local file does not exist, and returns a df.
@@ -49,9 +49,95 @@ def acquire_zillow():
     else:
         
         # Read fresh data from db into a DataFrame.
-        df = zillow_data()
+        df = data()
         
         # Write DataFrame to a csv file.
         df.to_csv('zillow_df.csv')
         
     return df
+
+def get_data_dictionary(df):
+    
+    d_list = [
+    '', #0
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '', #10
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '', # 20
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '', # 30
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '', # 40
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '', # 50
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '', # 60
+    'Error rate of acutal price vs predicted price',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '# 69'
+                 ]
+    data_dictionary = pd.DataFrame([{'Feature': col,
+         'Datatype': f'{df[col].count()} non-null: {df[col].dtype}'} for col in df.columns])
+    
+    describe = pd.Series(d_list)
+    df = pd.concat([data_dictionary, describe.rename("Description")], axis = 1)
+    return df.set_index("Feature")
+
+def get_target(df):    
+    df = get_data_dictionary(df)
+    df= df.reset_index()
+    df = df.rename(index = {61: 'Target'})
+    return df.iloc[61]

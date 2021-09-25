@@ -1,8 +1,8 @@
-from acquire import acquire_zillow
-from prepare import prepare_zillow
+from acquire import acquire
+from prepare import prepare
 
-def wrangle_zillow():
+def wrangle(mode, k):
     
-    train, validate, test = prepare_zillow(acquire_zillow())
+    train, validate, test = prepare(acquire(), mode, k)
     
     return train, validate, test
