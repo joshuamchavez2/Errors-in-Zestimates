@@ -81,7 +81,7 @@ def scaled(train, validate, test):
     train, validate, test = add_scaled_columns(train, validate, test, scaler, columns_to_scale)
     return train, validate, test
 
-def prepare(df, mode, k):
+def prepare_mode(df, mode, k):
 
     # For intial_explore clean and split only
     if mode=='intial_explore':
@@ -111,3 +111,8 @@ def prepare(df, mode, k):
         train, validate, test = split(df)
         train, validate, test = scaled(train, validate, test)
         return train, validate, test
+
+def prepare(df):
+    df = clean(df)
+    train, validate, test = split(df)
+    return train, validate, test
