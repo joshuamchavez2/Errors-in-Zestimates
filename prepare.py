@@ -54,6 +54,35 @@ def clean(df):
         'yearbuilt':'year',
         'taxamount':'tax_amount',
         'heatingorsystemdesc':'heating_type',})
+    
+    # Create new features
+    df['price_per_sqft']= df.lot_size/df.tax_value
+
+    # LA
+    # Dropped any homes higher than $2.50 price_per_sqft in LA.
+    # House was either really big or really inexpensive.
+    selRows = df[(df['price_per_sqft'] >2.5) & (df['county']=='Los Angeles')].index
+    df = df.drop(selRows, axis=0)
+
+    #Ventura
+    selRows = df[(df['lot_size'] > 250_000) & (df['county']=='Ventura')].index
+    df = df.drop(selRows, axis=0)
+
+    selRows = df[(df['tax_value'] < 55_000) & (df['county']=='Ventura')].index
+    df = df.drop(selRows, axis=0)
+
+    selRows = df[(df['price_per_sqft'] > .16) & (df['county']=='Ventura')].index
+    df = df.drop(selRows, axis=0)
+
+    #Orange County
+    selRows = df[(df['tax_value'] > 2_000_000) & (df['county']=='Orange')].index           
+    df = df.drop(selRows, axis=0)
+
+    selRows = df[(df['tax_value'] < 55_000) & (df['county']=='Orange')].index           
+    df = df.drop(selRows, axis=0)
+
+    selRows = df[(df['price_per_sqft'] > .08) & (df['county']=='Orange')].index           
+    df = df.drop(selRows, axis=0)
 
     # Imputing by most_frequent
     nulls = list(df.columns[df.isnull().sum() > 0])
