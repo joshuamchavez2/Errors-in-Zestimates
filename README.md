@@ -1,4 +1,4 @@
-<img src="graphs/cluster.png" width="500" height="500">
+<img src="graphs/cluster.png" width="750" height="500">
 
 <hr style="border-top: 10px groove blueviolet; margin-top: 1px; margin-bottom: 1px"></hr>
 
