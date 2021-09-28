@@ -81,15 +81,6 @@
     - What will I use my target for?
     - What are my deliverables?
 
-> - Acquire the data from codeup database
-    - Grab first iteration of features
-        - use only square feet of the home
-        - number of bedrooms
-        - number of bathrooms
-        - taxvaluedollarcnt
-    - Grab second iteration of features
-        - select all features
-
 > - Setup
     - Create a repo
     - Create a README.md
@@ -106,7 +97,6 @@
 
 > - Prepare
     - Create a prepare.py module
-
     - Clean data()
        - Drop columns
            - Document why I dropped columns
@@ -116,15 +106,12 @@
        - Check datatypes
        - Check for duplicates
        - Rename columns
-    
     - Remove outliers()
-
     - Split Data for modeling()
         - Encode()
             - Create dummies
             - Scale Data on Train
             - Transform Train, Validate, Test
-
     - Split Data for exploration()
         - No encoding
     
