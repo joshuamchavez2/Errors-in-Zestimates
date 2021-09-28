@@ -31,26 +31,49 @@
 
 
 #### Data Dictionary
-| Column Name                  | Renamed   | Info                                            |
-|------------------------------|-----------|-------------------------------------------------|
-| bathroomcnt                  | bathrooms | number of bathrooms                             |
-| bedroomcnt                   | bedrooms  | number of bedrooms                              |
-| calculatedfinishedsquarefeet | area      | number of square feet                           |
-| fips                         | N/A       | FIPS code (for county)                          |
-| yearbuilt                    | N/A       | The year the property was built                 |
-| taxvaluedollarcnt            | tax_value | Property's tax value in dollars                 |
-| taxamount                    | tax_amount| amount of tax on property                       |
-| tax_rate                     | N/A       | tax_rate on property                            |
-| poolsizesum                  | has_pool  | 1 for pool, 0 for no                            |
+
+| Feature               | Datatype                | Description                                          |
+|:----------------------|:------------------------|:-----------------------------------------------------|
+| bath                  | 28210 non-null: float64 | Number of bathrooms                                  |
+| bed                   | 28210 non-null: float64 | Number of bedrooms                                   |
+| area                  | 28210 non-null: float64 | Size of the home in sq ft                            |
+| lat                   | 28210 non-null: float64 | latitude coordinate                                  |
+| long                  | 28210 non-null: float64 | longitude coordinate                                 |
+| lot_size              | 28210 non-null: float64 | Size of the entire property                          |
+| year                  | 28210 non-null: float64 | year built                                           |
+| tax_value             | 28210 non-null: float64 | Home Value                                           |
+| tax_amount            | 28210 non-null: float64 | Home taxable amount                                  |
+| logerror              | 28210 non-null: float64 | log error of actual vs predicted home price          |
+| heating_type          | 28210 non-null: object  | Central, Floor/Wall, Yes, Forced air                 |
+| county                | 28210 non-null: object  | Created this feature from fips.  LA, Orange, Ventura |
+| price_per_sqft        | 28210 non-null: float64 | Created this feature lot_size/tax_value              |
+| bath_scaled           | 28210 non-null: float64 | Number of bathrooms scaled                           |
+| bed_scaled            | 28210 non-null: float64 | Number of bedrooms scaled                            |
+| area_scaled           | 28210 non-null: float64 | Area of Home scaled                                  |
+| lot_size_scaled       | 28210 non-null: float64 | Are of property scaled                               |
+| year_scaled           | 28210 non-null: float64 | year built scaled                                    |
+| tax_amount_scaled     | 28210 non-null: float64 | Home taxable amount scaled                           |
+| tax_value_scaled      | 28210 non-null: float64 | Home value scaled                                    |
+| lat_scaled            | 28210 non-null: float64 | Latitude coordinates scaled                          |
+| long_scaled           | 28210 non-null: float64 | Longitude coordinates scaled                         |
+| price_per_sqft_scaled | 28210 non-null: float64 | lot_size/tax_value scaled                            |
+| cluster               | 28210 non-null: int32   | 0, 1, 2, 3, 4                                        |
+| cluster_0             | 28210 non-null: uint8   | 0, 1                                                 |
+| cluster_1             | 28210 non-null: uint8   | 0, 1                                                 |
+| cluster_2             | 28210 non-null: uint8   | 0, 1                                                 |
+| cluster_3             | 28210 non-null: uint8   | 0, 1                                                 |
+| cluster_4             | 28210 non-null: uint8   | 0, 1                                                 |
 
 #### Initial Hypotheses
 
-> - **Hypothesis 1 -**
+> - Using clusters as features in my linear regression models will idenify which features are drivers of error in zestimate. 
+
+#### **Hypothesis 1 -**
 > - $H_{0}$: population means of the price per square feet for the three counties, Orange, Ventura & Los Angeles, are all equal.
 > - $H_{a}$: population means of the price per square feet for the three counties, Orange, Ventura & Los Angeles, are NOT all equal. 
 > - Outcome: I rejected the Null Hypothesis; Population means of the price per square feet for the three counties, Orange, Ventura & Los Angeles, are NOT all equal.
 
-> - **Hypothesis 2 -** 
+#### **Hypothesis 2 -** 
 
 > - $H_0$ There is no difference in cluster0 logerror mean than the overall logerror mean
 > - $H_a$ There is a difference in cluster0 logerror mean than the overall logerror mean
