@@ -46,14 +46,15 @@
 #### Initial Hypotheses
 
 > - **Hypothesis 1 -**
-    > - $H_{0}$: population means of the price per square feet for the three counties, Orange, Ventura & Los Angeles, are all equal.
-    > - $H_{a}$: population means of the price per square feet for the three counties, Orange, Ventura & Los Angeles, are NOT all equal. 
-    > - Outcome: I rejected the Null Hypothesis; Population means of the price per square feet for the three counties, Orange, Ventura & Los Angeles, are NOT all equal.
+> - $H_{0}$: population means of the price per square feet for the three counties, Orange, Ventura & Los Angeles, are all equal.
+> - $H_{a}$: population means of the price per square feet for the three counties, Orange, Ventura & Los Angeles, are NOT all equal. 
+> - Outcome: I rejected the Null Hypothesis; Population means of the price per square feet for the three counties, Orange, Ventura & Los Angeles, are NOT all equal.
 
 > - **Hypothesis 2 -** 
-    > - $H_0$ There is no difference in cluster0 logerror mean than the overall logerror mean
-    > - $H_a$ There is a difference in cluster0 logerror mean than the overall logerror mean
-    > - Outcome: I rejected the Null Hypothesis; There is a difference in cluster0 logerror mean than the overall logerror mean.
+
+> - $H_0$ There is no difference in cluster0 logerror mean than the overall logerror mean
+> - $H_a$ There is a difference in cluster0 logerror mean than the overall logerror mean
+> - Outcome: I rejected the Null Hypothesis; There is a difference in cluster0 logerror mean than the overall logerror mean.
     
 
 <hr style="border-top: 10px groove blueviolet; margin-top: 1px; margin-bottom: 1px"></hr>
