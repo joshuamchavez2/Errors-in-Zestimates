@@ -1,5 +1,5 @@
 ## Errors-in-Zestimates
-
+<img src="graphs/cluster.png" align="left" width="500" height="500">
 
 <hr style="border-top: 10px groove blueviolet; margin-top: 1px; margin-bottom: 1px"></hr>
 
@@ -11,6 +11,7 @@
 > - Create modules (wrangle.py, acquire.py, prepare.py, explore.py, evaluate.py) that make your process repeateable.
 > - A report in the form of a final notebook.  The report should summarize your findings about the drivers of logerror.
 > - Deliver a 4 minute final notebook presentation. This notebook will be what you present and should contain plenty of markdown documentation and cleaned up code.
+> - Create a Trello board and [link](https://trello.com/b/I2qqcLxr/errors-in-zestimates) it in your READ.md
 > - Answer panel questions about your code, process, findings and key takeaways, and model.
 
 #### Business Goals
