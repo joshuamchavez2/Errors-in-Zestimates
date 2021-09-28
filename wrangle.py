@@ -1,9 +1,9 @@
 from acquire import acquire
 from prepare import prepare_mode, prepare
 
-def wrangle_mode(mode, k):
+def wrangle_mode(mode):
     
-    train, validate, test = prepare_mode(acquire(), mode, k)
+    train, validate, test = prepare_mode(acquire(), mode)
     
     return train, validate, test
 

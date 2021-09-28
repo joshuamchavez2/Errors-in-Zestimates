@@ -159,7 +159,7 @@ def cluster(train, validate, test):
     return train, validate, test
 
 
-def prepare_mode(df, mode, k):
+def prepare_mode(df, mode):
 
     # For intial_explore clean and split only
     if mode=='intial_explore':
@@ -170,14 +170,14 @@ def prepare_mode(df, mode, k):
     # For explore clean, remove outliers, and split
     if mode=='explore':
         df = clean(df)
-        df = outlier(df, k)
+        df = outlier(df)
         train, validate, test = split(df)
         return train, validate, test
 
     # For clustering clean, remove outliers, split, and scaled. 
     if mode=='cluster':
         df = clean(df)
-        df = outlier(df, k)
+        df = outlier(df)
         train, validate, test = split(df)
         train, validate, test = scaled(train, validate, test)
         return train, validate, test
@@ -185,7 +185,7 @@ def prepare_mode(df, mode, k):
     # For model clean, remove outliers, split, and scaled.
     if mode=='model':
         df = clean(df)
-        df = remove_outliers(df, k)
+        df = remove_outliers(df)
         train, validate, test = split(df)
         train, validate, test = scaled(train, validate, test)
         return train, validate, test
